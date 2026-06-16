@@ -1,0 +1,29 @@
+# Python compile caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.venv/
+venv/
+env/
+.env
+
+# IDE / Editor configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# XtractorMP3 Local files & Binaries
+downloads/
+ffmpeg/
+ffmpeg-8.1.1-essentials_build/
+ffmpeg.zip
+user_config.json
+downloads_history.json
+*.log

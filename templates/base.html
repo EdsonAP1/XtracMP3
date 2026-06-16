@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}XtractorMP3 - YouTube Music Stream & Downloader{% endblock %}</title>
+    
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        zinc: {
+                            950: '#09090b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        /* Estilos base personalizados */
+        body {
+            font-family: 'Outfit', sans-serif;
+            scroll-behavior: smooth;
+        }
+        /* Custom scrollbar para estética minimalista */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+        /* Efecto de glassmorphism sutil */
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .dark .glass-panel {
+            background-color: rgba(9, 9, 11, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="h-full bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 transition-colors duration-300 flex flex-col overflow-hidden">
+    
+    {% block content %}{% endblock %}
+
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // Control por teclado para el reproductor de audio global
+        document.addEventListener('keydown', function(event) {
+            // Evitar que los atajos interfieran cuando el usuario está escribiendo en campos de texto
+            const activeElement = document.activeElement;
+            if (activeElement && (
+                activeElement.tagName === 'INPUT' || 
+                activeElement.tagName === 'TEXTAREA' || 
+                activeElement.isContentEditable
+            )) {
+                return;
+            }
+
+            const audioPlayer = document.getElementById('global-audio-player');
+            if (!audioPlayer) return;
+
+            // Barra espaciadora: Play / Pause
+            if (event.code === 'Space') {
+                event.preventDefault(); // Evitar scroll de la página
+                if (audioPlayer.paused) {
+                    audioPlayer.play().catch(err => console.log("Error de reproducción:", err));
+                } else {
+                    audioPlayer.pause();
+                }
+            }
+            
+            // Flecha Izquierda: Retroceder 10 segundos
+            if (event.code === 'ArrowLeft') {
+                event.preventDefault();
+                audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 10);
+            }
+            
+            // Flecha Derecha: Adelantar 10 segundos
+            if (event.code === 'ArrowRight') {
+                event.preventDefault();
+                audioPlayer.currentTime = Math.min(audioPlayer.duration || 0, audioPlayer.currentTime + 10);
+            }
+        });
+    </script>
+</body>
+</html>
